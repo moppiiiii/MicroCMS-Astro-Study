@@ -1,0 +1,249 @@
+---
+import Layout from "../layouts/Layout.astro";
+import LinkCard from "../components/LinkCard.astro";
+
+import { getBlogs } from "../lib/microcms";
+const response = await getBlogs({ fields: ["id", "title"] });
+
+const youtubeMovie = "https://www.youtube.com/embed/NniT0vKyn-E";
+const youtubeMovieThmbnail =
+  "https://img.youtube.com/vi/NniT0vKyn-E/maxresdefault.jpg";
+
+const brightcoveMovie =
+  "https://players.brightcove.net/1752604059001/VJCJXL3Ye_default/index.html?videoId=4093643993001";
+const bcMovieThumbnail = "";
+---
+
+<script>
+  const modal = document.querySelector(".js-modal");
+  const modalButton = document.querySelector(".js-modal-button");
+
+  const modalClose = document.querySelector(".js-close-button");
+
+  modalButton?.addEventListener("click", () => {
+    modal?.classList.add("is-open");
+  });
+
+  modalClose?.addEventListener("click", () => {
+    modal?.classList.remove("is-open");
+  });
+</script>
+
+<div class="layer js-modal">
+  <div class="modal">
+    <div class="modal__inner">
+      <div class="modal__button-wrap">
+        <button class="close-button js-close-button">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <div class="modal__contents">
+        <div class="modal__content">
+          <li style="list-style: none; width: 100%; height: 100%;">
+            <iframe
+              width="100%"
+              height="100%"
+              src={youtubeMovie}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+              allowfullscreen></iframe>
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <h1>Welcome to <span class="text-gradient">Astro</span></h1>
+
+    <h2>MicroCMS連携</h2>
+    <ul>
+      {
+        response.contents.map((content: any) => (
+          <LinkCard
+            title={content.title}
+            body="MicroCMSの記事です"
+            href={content.id}
+          />
+        ))
+      }
+    </ul>
+
+    <h2>動画埋め込み検証 - Youtube</h2>
+    <ul role="list" class="link-card-grid">
+      <li style="list-style: none;">
+        <iframe
+          width="100%"
+          height="100%"
+          src={youtubeMovie}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+          allowfullscreen></iframe>
+      </li>
+      <section class="js-modal-button">
+        <li style="list-style: none;">
+          <img
+            class="thumbnail"
+            alt="thumbnail"
+            width="100%"
+            height="100%"
+            src={youtubeMovieThmbnail}
+          />
+        </li>
+      </section>
+    </ul>
+
+    <h2>動画埋め込み検証 - Brightcove</h2>
+    <ul role="list" class="link-card-grid">
+      <li style="list-style: none;">
+        <iframe
+          width="100%"
+          height="100%"
+          src={brightcoveMovie}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+          allowfullscreen></iframe>
+      </li>
+      <section class="js-modal-button">
+        <li style="list-style: none;">
+          <img
+            class="thumbnail"
+            alt="thumbnail"
+            width="100%"
+            height="100%"
+            src={bcMovieThumbnail}
+          />
+        </li>
+      </section>
+    </ul>
+  </main>
+
+  <style>
+    main {
+      margin: auto;
+      padding: 1rem;
+      width: 1000px;
+      max-width: calc(100% - 2rem);
+      color: white;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .layer {
+      background: rgba(0, 0, 0, 0.5);
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .layer.is-open {
+      z-index: 999;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .layer.is-open .modal {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal__button-wrap {
+      position: absolute;
+      right: 0px;
+      top: -20px;
+      display: inline-flex;
+    }
+
+    .close-button {
+      position: relative;
+      width: 39px;
+      height: 39px;
+      background: orange;
+      border-radius: 50%;
+      padding: 0;
+      border: transparent;
+      cursor: pointer;
+    }
+
+    .close-button span {
+      width: 25px;
+      height: 2px;
+      background: #fff;
+      display: inline-block;
+      position: absolute;
+      left: calc(50% - 12.5px);
+      top: 50%;
+      border-radius: 20px;
+    }
+
+    .close-button span:nth-child(1) {
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    .close-button span:nth-child(2) {
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+    .modal {
+      position: relative;
+      margin-right: auto;
+      margin-left: auto;
+      width: 80%;
+      min-width: 440px;
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        visibility 0.7s linear,
+        opacity 0.7s linear;
+    }
+
+    .modal__inner {
+      margin-top: 125px;
+      margin-bottom: 125px;
+      position: relative;
+      box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.25);
+      display: block;
+      height: auto;
+    }
+
+    .modal__content {
+      height: calc(100vh - 250px);
+    }
+
+    .modal__button-area {
+      max-width: 843px;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: 17px;
+      padding-top: 15px;
+    }
+
+    .text-gradient {
+      background-image: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 400%;
+      background-position: 0%;
+    }
+    .link-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+      gap: 2rem;
+      padding: 0;
+    }
+  </style>
+</Layout>
