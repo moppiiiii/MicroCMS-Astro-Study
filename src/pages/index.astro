@@ -11,13 +11,12 @@ const youtubeMovieThmbnail =
 
 const brightcoveMovie =
   "https://players.brightcove.net/1752604059001/VJCJXL3Ye_default/index.html?videoId=4093643993001";
-const bcMovieThumbnail = "";
+const brightcoveMovieThumbnail = "";
 ---
 
 <script>
   const modal = document.querySelector(".js-modal");
   const modalButton = document.querySelector(".js-modal-button");
-
   const modalClose = document.querySelector(".js-close-button");
 
   modalButton?.addEventListener("click", () => {
@@ -103,7 +102,7 @@ const bcMovieThumbnail = "";
           width="100%"
           height="100%"
           src={brightcoveMovie}
-          title="YouTube video player"
+          title="Brightcove video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
           allowfullscreen></iframe>
       </li>
@@ -114,7 +113,7 @@ const bcMovieThumbnail = "";
             alt="thumbnail"
             width="100%"
             height="100%"
-            src={bcMovieThumbnail}
+            src={brightcoveMovieThumbnail}
           />
         </li>
       </section>
@@ -125,6 +124,25 @@ const bcMovieThumbnail = "";
     <a href="http://localhost:3000/日本語検証/日本語２">パス：/日本語２</a>
     <a href="http://localhost:3000/テストてすと">パス：/テストてすと</a>
     <a href="http://localhost:3000/ほげhoge">パス：/ほげhoge</a>
+
+    <div id="adobe-dc-view"></div>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script type="text/javascript">
+      document.addEventListener("adobe_dc_view_sdk.ready", function () {
+        var adobeDCView = new AdobeDC.View({
+          clientId: "95654a2de6b04a7babdf73041e4de7d2",
+          divId: "adobe-dc-view",
+        });
+        adobeDCView.previewFile({
+          content: {
+            location: {
+              url: "https://acrobatservices.adobe.com/view-sdk-demo/PDFs/Bodea Brochure.pdf",
+            },
+          },
+          metaData: { fileName: "Bodea Brochure.pdf" },
+        });
+      });
+    </script>
 
     <style>
       main {
